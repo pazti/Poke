@@ -5,6 +5,7 @@ type ConfirmationResult = 'sent' | 'skipped' | 'failed'
 export async function sendWaitlistConfirmation(email: string): Promise<ConfirmationResult> {
   const apiKey = process.env.RESEND_API_KEY
   const from = process.env.WAITLIST_FROM_EMAIL
+  const replyTo = process.env.WAITLIST_REPLY_TO || 'officialpokeapp@gmail.com'
 
   if (!apiKey || !from) return 'skipped'
 
@@ -17,6 +18,7 @@ export async function sendWaitlistConfirmation(email: string): Promise<Confirmat
       },
       body: JSON.stringify({
         from,
+        reply_to: replyTo,
         to: [email],
         subject: 'Your Poke early-access spot is saved',
         text: [
